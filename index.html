@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Montreal X AI</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#0e1116;
+      --muted:#667085;
+      --line:#e7e9ee;
+
+      --brand:#0B7D91;
+      --brand2:#075A68;
+
+      --shadow: 0 10px 30px rgba(16,24,40,.08);
+      --shadow2: 0 6px 16px rgba(16,24,40,.10);
+    }
+
+    /* Dark mode */
+    body.dark{
+      --bg:#0b1220;
+      --card:#0f172a;
+      --text:#e5e7eb;
+      --muted:#9aa4b2;
+      --line:#1f2a44;
+      --shadow: 0 14px 40px rgba(0,0,0,.35);
+      --shadow2: 0 10px 24px rgba(0,0,0,.35);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:"Roboto",system-ui,-apple-system,Segoe UI,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit;text-decoration:none}
+    button{font-family:inherit}
+
+    /* LAYOUT */
+    .app{
+      display:grid;
+      grid-template-columns: 260px 1fr;
+      min-height:100vh;
+    }
+
+    /* BANNER */
+    .banner{
+      position:sticky;
+      top:0;
+      z-index:1200;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:10px 14px;
+      background: linear-gradient(135deg, rgba(11,125,145,.18), rgba(7,90,104,.10));
+      border-bottom:1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+    .banner b{font-size:13px}
+    .banner span{font-size:13px;color:var(--muted)}
+    .banner .tag{
+      font-size:11px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(11,125,145,.12);
+      border:1px solid rgba(11,125,145,.22);
+      color:var(--text);
+      font-weight:900;
+      white-space:nowrap;
+    }
+
+    /* SIDEBAR */
+    .sidebar{
+      position:sticky; top:0;
+      height:100vh;
+      padding:22px 18px;
+      border-right:1px solid var(--line);
+      background:rgba(255,255,255,.7);
+      backdrop-filter: blur(10px);
+    }
+    body.dark .sidebar{ background: rgba(15,23,42,.75); }
+
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      padding:10px 10px;
+      border-radius:12px;
+    }
+    .brand-badge{
+      width:34px;height:34px;border-radius:10px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      color:#fff;font-weight:800;
+      box-shadow: 0 10px 20px rgba(11,125,145,.25);
+    }
+    .brand h1{
+      font-family:"Montserrat",sans-serif;
+      font-size:16px; letter-spacing:.6px;
+      line-height:1.1;
+    }
+    .brand p{font-size:12px;color:var(--muted);margin-top:2px}
+
+    .side-group{margin-top:18px}
+    .side-label{
+      font-size:11px;
+      color:var(--muted);
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      padding:10px 10px 8px;
+    }
+    .nav{
+      display:flex;flex-direction:column;gap:6px;
+      padding:0 6px;
+    }
+    .nav a{
+      display:flex;align-items:center;gap:10px;
+      padding:10px 10px;
+      border-radius:12px;
+      color:var(--text);
+      font-weight:500;
+    }
+    .nav a:hover{background:var(--card); box-shadow: 0 6px 14px rgba(16,24,40,.06)}
+    .nav a.active{
+      background:linear-gradient(135deg, rgba(11,125,145,.12), rgba(7,90,104,.08));
+      border:1px solid rgba(11,125,145,.18);
+      box-shadow: 0 10px 24px rgba(11,125,145,.10);
+    }
+
+    .pill-row{
+      display:flex; gap:8px; padding:10px 10px 0;
+    }
+    .pill{
+      border:1px solid var(--line);
+      background:var(--card);
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--text);
+      cursor:pointer;
+    }
+    .pill.active{
+      border-color:rgba(11,125,145,.35);
+      background:rgba(11,125,145,.08);
+      font-weight:800;
+    }
+
+    /* MAIN */
+    .main{
+      padding:18px 26px 90px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin:14px 0 18px;
+    }
+    .top-left{
+      display:flex; align-items:center; gap:10px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:999px;
+      background:rgba(11,125,145,.35);
+      box-shadow:0 0 0 6px rgba(11,125,145,.10);
+    }
+
+    .cta{
+      display:flex; align-items:center; gap:10px;
+    }
+    .btn{
+      border:none;
+      padding:11px 14px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:800;
+      transition:.15s ease;
+    }
+    .btn.primary{
+      color:#fff;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      box-shadow: 0 14px 30px rgba(11,125,145,.22);
+    }
+    .btn.primary:hover{transform: translateY(-1px); box-shadow: 0 18px 40px rgba(11,125,145,.25)}
+    .btn.ghost{
+      background:var(--card);
+      border:1px solid var(--line);
+      color:var(--text);
+    }
+    .btn.ghost:hover{box-shadow: 0 10px 24px rgba(16,24,40,.08)}
+    .btn.icon{
+      width:44px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+      padding:11px 0;
+    }
+
+    /* HERO */
+    .hero{
+      background: radial-gradient(900px 400px at 20% 10%, rgba(11,125,145,.18), transparent 55%),
+                  radial-gradient(800px 400px at 80% 0%, rgba(7,90,104,.14), transparent 55%),
+                  var(--card);
+      border:1px solid var(--line);
+      border-radius: 22px;
+      padding:26px;
+      box-shadow: var(--shadow);
+      margin-bottom:18px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:18px;
+      align-items:center;
+    }
+    .hero h2{
+      font-family:"Montserrat",sans-serif;
+      font-size:34px;
+      line-height:1.1;
+      letter-spacing:-.02em;
+      margin-bottom:10px;
+    }
+    .hero p{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:16px;
+      max-width:62ch;
+    }
+    .hero .badges{
+      display:flex; flex-wrap:wrap; gap:8px;
+    }
+    .badge{
+      font-size:12px;
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(11,125,145,.08);
+      border:1px solid rgba(11,125,145,.14);
+      color:var(--text);
+      font-weight:800;
+    }
+    .hero-card{
+      background:rgba(255,255,255,.8);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px;
+      box-shadow: var(--shadow2);
+    }
+    body.dark .hero-card{ background: rgba(15,23,42,.85); }
+    .hero-card h3{font-size:14px;color:var(--text);margin-bottom:8px}
+    .hero-card .stat{
+      display:flex; justify-content:space-between; align-items:baseline;
+      padding:10px 0;
+      border-bottom:1px dashed var(--line);
+    }
+    .hero-card .stat:last-child{border-bottom:none}
+    .hero-card .stat b{font-size:18px}
+    .hero-card .stat span{color:var(--muted); font-size:12px}
+
+    /* SECTION */
+    .section{
+      margin-top:18px;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius: 22px;
+      padding:22px;
+      box-shadow: var(--shadow);
+    }
+    .section-head{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:10px;
+      margin-bottom:14px;
+    }
+    .section-head h3{
+      font-family:"Montserrat",sans-serif;
+      font-size:18px;
+      letter-spacing:-.01em;
+    }
+    .section-head p{color:var(--muted); font-size:13px}
+
+    .grid3{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:14px;
+    }
+    .grid2{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:14px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px;
+      box-shadow: 0 8px 20px rgba(16,24,40,.06);
+    }
+    body.dark .card{ box-shadow: 0 10px 24px rgba(0,0,0,.25); }
+    .card h4{font-size:14px;margin-bottom:8px}
+    .card p{color:var(--muted);font-size:13px;line-height:1.6}
+    .list{
+      margin-top:10px;
+      list-style:none;
+      display:flex; flex-direction:column; gap:8px;
+    }
+    .list li{
+      display:flex; gap:10px; align-items:flex-start;
+      color:var(--text); font-size:13px;
+    }
+    .check{
+      width:18px;height:18px;border-radius:6px;
+      display:grid;place-items:center;
+      background:rgba(11,125,145,.12);
+      border:1px solid rgba(11,125,145,.20);
+      color:var(--text);
+      flex:0 0 auto;
+      font-weight:900;
+      margin-top:1px;
+    }
+
+    /* PRICING TOGGLE */
+    .toggle-wrap{
+      display:flex; justify-content:center;
+      margin:8px 0 16px;
+    }
+    .toggle{
+      display:inline-flex;
+      background: color-mix(in srgb, var(--card) 70%, #f4f6fa 30%);
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:4px;
+      gap:4px;
+    }
+    .toggle button{
+      border:none;
+      background:transparent;
+      padding:10px 16px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:900;
+      color:var(--muted);
+      min-width:120px;
+    }
+    .toggle button.active{
+      background:#111827;
+      color:#fff;
+      box-shadow: 0 12px 22px rgba(17,24,39,.18);
+    }
+    body.dark .toggle button.active{
+      background:#e5e7eb;
+      color:#0b1220;
+    }
+
+    .pricing-grid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:14px;
+    }
+    .price-card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      box-shadow: var(--shadow2);
+      position:relative;
+      overflow:hidden;
+    }
+    .price-card::before{
+      content:"";
+      position:absolute; inset:-60px -80px auto auto;
+      width:200px;height:200px;border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, rgba(11,125,145,.22), transparent 60%);
+      pointer-events:none;
+    }
+    .price-top{
+      display:flex;justify-content:space-between;align-items:flex-start;gap:10px;
+      margin-bottom:12px;
+    }
+    .plan{
+      font-weight:900; font-size:14px;
+    }
+    .plan-sub{font-size:12px;color:var(--muted); margin-top:2px}
+    .tag{
+      font-size:11px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(11,125,145,.10);
+      border:1px solid rgba(11,125,145,.18);
+      color:var(--text);
+      font-weight:900;
+      white-space:nowrap;
+    }
+    .price{
+      display:flex;align-items:baseline;gap:6px;
+      margin:10px 0 4px;
+    }
+    .price .cur{font-weight:900;color:var(--text)}
+    .price .amt{font-size:40px;font-weight:900; letter-spacing:-.04em}
+    .price .per{color:var(--muted);font-size:12px}
+    .mini-row{
+      display:flex; gap:8px; flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .mini{
+      font-size:11px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: color-mix(in srgb, var(--card) 85%, #fbfcff 15%);
+      color:var(--text);
+      font-weight:900;
+    }
+    .sep{height:1px;background:var(--line); margin:14px 0}
+    .price-card ul{list-style:none; display:flex; flex-direction:column; gap:8px}
+    .price-card li{font-size:13px;color:var(--text); display:flex; gap:10px}
+    .price-card .btn{
+      width:100%;
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:14px;
+    }
+
+    .featured{
+      border-color: rgba(11,125,145,.35);
+      box-shadow: 0 18px 50px rgba(11,125,145,.14);
+      transform: translateY(-2px);
+    }
+
+    /* TEAM FLIP */
+    .team-grid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:14px;
+    }
+    .flip{
+      perspective: 1000px;
+      cursor:pointer;
+      height:170px;
+    }
+    .flip-inner{
+      position:relative; height:100%;
+      transition: transform .65s;
+      transform-style:preserve-3d;
+      border-radius:18px;
+      box-shadow: 0 10px 24px rgba(16,24,40,.10);
+    }
+    body.dark .flip-inner{ box-shadow: 0 14px 32px rgba(0,0,0,.35); }
+    .flip.expanded .flip-inner{transform: rotateY(180deg)}
+    .face{
+      position:absolute; inset:0;
+      backface-visibility:hidden;
+      border-radius:18px;
+      padding:16px;
+      border:1px solid var(--line);
+      background:var(--card);
+      display:flex; flex-direction:column; justify-content:center;
+    }
+    .back{
+      transform: rotateY(180deg);
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      color:#fff;
+      border:none;
+    }
+    .name{font-weight:900}
+    .role{color:var(--muted);font-size:12px;margin-top:2px}
+    .back .role{color:rgba(255,255,255,.85)}
+    .back p{margin-top:10px;font-size:13px;line-height:1.55;color:#fff}
+
+    /* PAGES */
+    .page{display:none}
+    .page.active{display:block}
+
+    /* FLOATING CALL BUTTON */
+    .call-fab{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:9999;
+      border:none;
+      cursor:pointer;
+      border-radius:999px;
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:#fff;
+      background:#0b1220;
+      box-shadow: 0 18px 50px rgba(0,0,0,.28);
+    }
+    .pulse{
+      width:12px;height:12px;border-radius:999px;
+      background:#7c3aed;
+      box-shadow: 0 0 0 0 rgba(124,58,237,.55);
+      animation:pulse 1.5s infinite;
+    }
+    @keyframes pulse{
+      0%{box-shadow:0 0 0 0 rgba(124,58,237,.55)}
+      70%{box-shadow:0 0 0 14px rgba(124,58,237,0)}
+      100%{box-shadow:0 0 0 0 rgba(124,58,237,0)}
+    }
+
+    /* MODAL */
+    .modal-wrap{
+      position:fixed; inset:0;
+      display:none;
+      align-items:center; justify-content:center;
+      background:rgba(0,0,0,.5);
+      z-index:99999;
+      padding:16px;
+    }
+    .modal{
+      width:min(720px, 100%);
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid var(--line);
+      box-shadow: 0 30px 80px rgba(0,0,0,.25);
+      overflow:hidden;
+    }
+    .modal-head{
+      padding:14px 16px;
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      border-bottom:1px solid var(--line);
+      background: color-mix(in srgb, var(--card) 85%, #fbfcff 15%);
+    }
+    .modal-head b{font-size:14px}
+    .x{
+      border:none;background:var(--card);border:1px solid var(--line);
+      width:36px;height:36px;border-radius:12px;cursor:pointer;
+      color:var(--text);
+    }
+    .modal-body{padding:16px}
+    .modal-body p{color:var(--muted); font-size:13px; line-height:1.6}
+    .modal-grid{
+      display:grid; grid-template-columns: 1fr 1fr;
+      gap:12px; margin-top:12px;
+    }
+    .field{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+    }
+    .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+    .field input, .field textarea{
+      width:100%;
+      border:none;
+      outline:none;
+      font-size:14px;
+      resize:none;
+      background:transparent;
+      color:var(--text);
+    }
+
+    footer{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:13px;
+      text-align:center;
+      padding:18px 8px;
+    }
+
+    /* MOBILE */
+    .mobile-top{
+      display:none;
+      position:sticky; top:0;
+      z-index:1300;
+      background:rgba(255,255,255,.82);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--line);
+      padding:12px 14px;
+      justify-content:space-between; align-items:center;
+    }
+    body.dark .mobile-top{ background: rgba(15,23,42,.82); }
+    .hamb{
+      border:1px solid var(--line);
+      background:var(--card);
+      width:42px;height:42px;border-radius:14px;
+      cursor:pointer;
+      display:grid;place-items:center;
+      box-shadow: 0 10px 18px rgba(16,24,40,.06);
+      color:var(--text);
+    }
+    .hamb span{display:block;width:18px;height:2px;background:var(--text);position:relative}
+    .hamb span::before,.hamb span::after{
+      content:""; position:absolute; left:0; width:18px;height:2px;background:var(--text);
+    }
+    .hamb span::before{top:-6px}
+    .hamb span::after{top:6px}
+
+    .drawer{
+      position:fixed; inset:0;
+      display:none;
+      z-index:99998;
+      background:rgba(0,0,0,.45);
+    }
+    .drawer .panel{
+      width:min(320px, 92vw);
+      height:100%;
+      background:var(--card);
+      border-right:1px solid var(--line);
+      box-shadow: 0 30px 90px rgba(0,0,0,.22);
+      padding:16px;
+    }
+
+    @media (max-width: 980px){
+      .app{grid-template-columns: 1fr}
+      .sidebar{display:none}
+      .mobile-top{display:flex}
+      .hero-grid{grid-template-columns:1fr}
+      .grid3{grid-template-columns:1fr}
+      .grid2{grid-template-columns:1fr}
+      .pricing-grid{grid-template-columns:1fr}
+      .team-grid{grid-template-columns:1fr}
+      .modal-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Promo Banner -->
+  <div class="banner">
+    <span class="tag" id="promoTag">PROMO</span>
+    <b id="promoBold">Montreal businesses get 20% off</b>
+    <span id="promoText">— prices shown are standard; Montreal rate applies at checkout.</span>
+  </div>
+
+  <!-- Mobile Topbar -->
+  <div class="mobile-top">
+    <button class="hamb" id="openDrawer" aria-label="Open menu"><span></span></button>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="brand-badge">X</div>
+      <b style="font-family:Montserrat, sans-serif;">MONTREAL X AI</b>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button class="btn ghost icon" id="themeToggleMobile" title="Toggle dark mode">🌙</button>
+      <button class="btn primary" id="scheduleBtnMobile">Schedule</button>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer -->
+  <div class="drawer" id="drawer">
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="brand" style="padding:0">
+          <div class="brand-badge">X</div>
+          <div>
+            <h1>MONTREAL X AI</h1>
+            <p id="weatherMobile">Global • Ready</p>
+          </div>
+        </div>
+        <button class="x" id="closeDrawer" aria-label="Close">✕</button>
+      </div>
+
+      <div class="pill-row" style="padding-left:0">
+        <button class="pill active" id="enBtnM">EN</button>
+        <button class="pill" id="frBtnM">FR</button>
+      </div>
+
+      <div class="side-group">
+        <div class="side-label">Menu</div>
+        <div class="nav" style="padding:0">
+          <a href="#" data-page="homeM" class="active">Home</a>
+          <a href="#" data-page="howM">How It Works</a>
+          <a href="#" data-page="pricingM">Pricing</a>
+          <a href="#" data-page="featuresM">Features</a>
+          <a href="#" data-page="supportM">Support</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge">X</div>
+        <div>
+          <h1>MONTREAL X AI</h1>
+          <p id="weatherDesk">Global • Ready</p>
+        </div>
+      </div>
+
+      <div class="pill-row">
+        <button class="pill active" id="enBtn">EN</button>
+        <button class="pill" id="frBtn">FR</button>
+      </div>
+
+      <div class="side-group">
+        <div class="side-label">Navigation</div>
+        <nav class="nav" id="navDesk">
+          <a href="#" data-page="home" class="active">Home</a>
+          <a href="#" data-page="how">How It Works</a>
+          <a href="#" data-page="pricing">Pricing</a>
+          <a href="#" data-page="features">Features</a>
+          <a href="#" data-page="support">Support</a>
+        </nav>
+      </div>
+
+      <div class="side-group">
+        <div class="side-label">Quick action</div>
+        <button class="btn primary" id="scheduleBtn" style="width:100%">Schedule a Call</button>
+        <button class="btn ghost" id="emailBtn" style="width:100%; margin-top:10px">Email us</button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <div class="topbar">
+        <div class="top-left">
+          <span class="dot"></span>
+          <span id="topNote">AI built for real businesses — anywhere.</span>
+        </div>
+        <div class="cta">
+          <button class="btn ghost icon" id="themeToggle" title="Toggle dark mode">🌙</button>
+          <button class="btn ghost" id="copyNumber">Copy Phone</button>
+          <button class="btn primary" id="scheduleBtn2">Schedule a Call</button>
+        </div>
+      </div>
+
+      <!-- HOME -->
+      <section class="page active" id="home">
+        <div class="hero">
+          <div class="hero-grid">
+            <div>
+              <h2 id="heroTitle">Stop missing calls. Book more jobs automatically.</h2>
+              <p id="heroDesc">
+                A 24/7 AI receptionist for calls + website chat that captures leads, answers FAQs, and books appointments —
+                without hiring extra staff.
+              </p>
+              <div class="badges">
+                <span class="badge" id="badge1">24/7 Calls</span>
+                <span class="badge" id="badge2">Lead Capture</span>
+                <span class="badge" id="badge3">Appointment Booking</span>
+                <span class="badge" id="badge4">English / Français</span>
+              </div>
+            </div>
+
+            <div class="hero-card">
+              <h3 id="heroCardTitle">What you get</h3>
+              <div class="stat">
+                <span id="stat1">Never miss a lead</span>
+                <b id="stat1b">24/7</b>
+              </div>
+              <div class="stat">
+                <span id="stat2">Fast responses</span>
+                <b id="stat2b">&lt; 10s</b>
+              </div>
+              <div class="stat">
+                <span id="stat3">Setup included</span>
+                <b id="stat3b">Free</b>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-head">
+            <div>
+              <h3 id="missionTitle">Our Goal</h3>
+              <p id="missionSub">AI BUILT FOR REAL BUSINESSES</p>
+            </div>
+            <div style="color:var(--muted);font-size:13px" id="missionSide">More bookings. Faster responses.</div>
+          </div>
+
+          <div class="grid2">
+            <div class="card">
+              <h4 id="missionH1">The problem</h4>
+              <p id="missionP1">
+                Businesses miss calls and messages daily — leads go cold and customers move on.
+              </p>
+            </div>
+            <div class="card">
+              <h4 id="missionH2">The fix</h4>
+              <p id="missionP2">
+                We deploy AI that answers, qualifies, and books — automatically, 24/7 — so you can focus on the work.
+              </p>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:14px">
+            <h4 id="missionH3">Outcome</h4>
+            <p id="missionHighlight"><b>More bookings.</b> Faster replies. No extra staff.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-head">
+            <div>
+              <h3 id="teamTitle">Executive Team</h3>
+              <p id="teamSub">Click a card to flip</p>
+            </div>
+          </div>
+
+          <div class="team-grid">
+            <div class="flip" onclick="flipOnly(this)">
+              <div class="flip-inner">
+                <div class="face">
+                  <div class="name">Anisha</div>
+                  <div class="role" id="anishaRole">Marketing & Client Relations</div>
+                  <p style="margin-top:10px;color:var(--muted);font-size:13px" id="anishaFront">
+                    Outreach, onboarding, and long-term client success.
+                  </p>
+                </div>
+                <div class="face back">
+                  <div class="name">Anisha</div>
+                  <div class="role">Marketing & Client Relations</div>
+                  <p id="anishaBack">
+                    Oversees outreach, onboarding, and client relationships — ensuring solutions directly support growth and customer experience.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="flip" onclick="flipOnly(this)">
+              <div class="flip-inner">
+                <div class="face">
+                  <div class="name">Jaiden</div>
+                  <div class="role" id="jaidenRole">Cybersecurity Director</div>
+                  <p style="margin-top:10px;color:var(--muted);font-size:13px" id="jaidenFront">
+                    Security strategy and risk reduction.
+                  </p>
+                </div>
+                <div class="face back">
+                  <div class="name">Jaiden</div>
+                  <div class="role">Cybersecurity Director</div>
+                  <p id="jaidenBack">
+                    Leads security strategy, penetration testing, and risk assessments to protect infrastructure, data, and operational continuity.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="flip" onclick="flipOnly(this)">
+              <div class="flip-inner">
+                <div class="face">
+                  <div class="name">Saeed</div>
+                  <div class="role" id="saeedRole">Operations & Infrastructure</div>
+                  <p style="margin-top:10px;color:var(--muted);font-size:13px" id="saeedFront">
+                    Uptime, integrations, and reliability.
+                  </p>
+                </div>
+                <div class="face back">
+                  <div class="name">Saeed</div>
+                  <div class="role">Operations & Infrastructure</div>
+                  <p id="saeedBack">
+                    Manages backend systems, integrations, and uptime so services run reliably 24/7.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section class="page" id="how">
+        <div class="section">
+          <div class="section-head">
+            <div>
+              <h3 id="howTitle">How it works</h3>
+              <p id="howSub">From demo → launch in a simple flow</p>
+            </div>
+            <button class="btn primary" id="howCta">Get a free demo</button>
+          </div>
+
+          <div class="grid3">
+            <div class="card">
+              <h4 id="step1T">1) Quick demo</h4>
+              <p id="step1D">We show you a live example and confirm what you want the AI to do (calls, booking, FAQs, etc.).</p>
+            </div>
+            <div class="card">
+              <h4 id="step2T">2) Setup & training</h4>
+              <p id="step2D">We connect your number, add your services, hours, and booking rules.</p>
+              <ul class="list">
+                <li><span class="check">✓</span><span id="step2L1">Greeting + tone</span></li>
+                <li><span class="check">✓</span><span id="step2L2">Lead fields</span></li>
+                <li><span class="check">✓</span><span id="step2L3">Booking calendar</span></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h4 id="step3T">3) Launch + improve</h4>
+              <p id="step3D">We go live, monitor, and tighten responses using real call/message logs.</p>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:14px">
+            <h4 id="howNoteT">What clients see</h4>
+            <p id="howNoteD" style="color:var(--muted)">
+              Customers call your business → AI answers instantly → captures name + need → books or routes the request → you get the details.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRICING -->
+      <section class="page" id="pricing">
+        <div class="section">
+          <div class="section-head">
+            <div>
+              <h3 id="pricingTitle">Pricing</h3>
+              <p id="pricingSub">Plans include setup + support. Usage-based minutes included.</p>
+            </div>
+          </div>
+
+          <div class="toggle-wrap">
+            <div class="toggle" role="tablist" aria-label="Pricing toggle">
+              <button id="aiToggle" class="active" type="button">AI</button>
+              <button id="cyberToggle" type="button">Cybersecurity</button>
+            </div>
+          </div>
+
+          <!-- AI Pricing (prices raised 20%) -->
+          <div id="aiPricing" class="pricing-grid">
+            <div class="price-card">
+              <div class="price-top">
+                <div>
+                  <div class="plan">Starter</div>
+                  <div class="plan-sub" id="ai1sub">Calls + lead capture</div>
+                </div>
+                <div class="tag" id="tagStarter">Setup included</div>
+              </div>
+
+              <div class="price">
+                <span class="cur">CAD$</span>
+                <span class="amt">239</span>
+                <span class="per" id="perMonth1">/ month</span>
+              </div>
+
+              <div class="mini-row">
+                <span class="mini" id="miniMins1">200 mins included</span>
+                <span class="mini" id="miniOver1">$0.25/min over</span>
+                <span class="mini" id="miniLang">EN/FR</span>
+              </div>
+
+              <div class="sep"></div>
+
+              <ul>
+                <li><span class="check">✓</span><span id="ai1f1">1 phone number</span></li>
+                <li><span class="check">✓</span><span id="ai1f2">Lead capture + summaries</span></li>
+                <li><span class="check">✓</span><span id="ai1f3">Call routing rules</span></li>
+              </ul>
+
+              <button class="btn ghost" onclick="openSchedule()" id="choose1">Choose plan</button>
+            </div>
+
+            <div class="price-card featured">
+              <div class="price-top">
+                <div>
+                  <div class="plan">Growth</div>
+                  <div class="plan-sub" id="ai2sub">Calls + booking + web chat</div>
+                </div>
+                <div class="tag" id="tagBest">Most popular</div>
+              </div>
+
+              <div class="price">
+                <span class="cur">CAD$</span>
+                <span class="amt">360</span>
+                <span class="per" id="perMonth2">/ month</span>
+              </div>
+
+              <div class="mini-row">
+                <span class="mini" id="miniMins2">600 mins included</span>
+                <span class="mini" id="miniOver2">$0.23/min over</span>
+                <span class="mini" id="miniAnalytics">Analytics</span>
+              </div>
+
+              <div class="sep"></div>
+
+              <ul>
+                <li><span class="check">✓</span><span id="ai2f1">Website AI chatbot</span></li>
+                <li><span class="check">✓</span><span id="ai2f2">Appointment booking flow</span></li>
+                <li><span class="check">✓</span><span id="ai2f3">Follow-up + lead routing</span></li>
+              </ul>
+
+              <button class="btn primary" onclick="openSchedule()" id="choose2">Schedule demo</button>
+            </div>
+
+            <div class="price-card">
+              <div class="price-top">
+                <div>
+                  <div class="plan">Scale</div>
+                  <div class="plan-sub" id="ai3sub">Multi-line + integrations</div>
+                </div>
+                <div class="tag" id="tagCustom">Custom</div>
+              </div>
+
+              <div class="price">
+                <span class="cur">CAD$</span>
+                <span class="amt">900+</span>
+                <span class="per" id="perMonth3">/ month</span>
+              </div>
+
+              <div class="mini-row">
+                <span class="mini" id="miniMins3">1500+ mins</span>
+                <span class="mini" id="miniOver3">Best rate</span>
+                <span class="mini" id="miniCRM">Integrations</span>
+              </div>
+
+              <div class="sep"></div>
+
+              <ul>
+                <li><span class="check">✓</span><span id="ai3f1">Multiple numbers / locations</span></li>
+                <li><span class="check">✓</span><span id="ai3f2">Advanced workflows</span></li>
+                <li><span class="check">✓</span><span id="ai3f3">Dashboards + reporting</span></li>
+              </ul>
+
+              <button class="btn ghost" onclick="openSchedule()" id="choose3">Talk to us</button>
+            </div>
+          </div>
+
+          <!-- Cyber Pricing (prices raised 20%) -->
+          <div id="cyberPricing" class="pricing-grid" style="display:none">
+            <div class="price-card">
+              <div class="price-top">
+                <div>
+                  <div class="plan">Security Scan</div>
+                  <div class="plan-sub" id="cy1sub">Baseline visibility</div>
+                </div>
+                <div class="tag">Monthly</div>
+              </div>
+
+              <div class="price">
+                <span class="cur">CAD$</span>
+                <span class="amt">119</span>
+                <span class="per" id="perMonth4">/ month</span>
+              </div>
+
+              <div class="sep"></div>
+              <ul>
+                <li><span class="check">✓</span><span id="cy1f1">External vulnerability review</span></li>
+                <li><span class="check">✓</span><span id="cy1f2">Exposure analysis</span></li>
+                <li><span class="check">✓</span><span id="cy1f3">Clear remediation guidance</span></li>
+              </ul>
+
+              <button class="btn ghost" onclick="openSchedule()">Choose plan</button>
+            </div>
+
+            <div class="price-card featured">
+              <div class="price-top">
+                <div>
+                  <div class="plan">Pen Testing</div>
+                  <div class="plan-sub" id="cy2sub">Real attack simulation</div>
+                </div>
+                <div class="tag">Popular</div>
+              </div>
+
+              <div class="price">
+                <span class="cur">CAD$</span>
+                <span class="amt">239</span>
+                <span class="per" id="perMonth5">/ month</span>
+              </div>
+
+              <div class="sep"></div>
+              <ul>
+                <li><span class="check">✓</span><span id="cy2f1">Web & system testing</span></li>
+                <li><span class="check">✓</span><span id="cy2f2">Risk-prioritized report</span></li>
+                <li><span class="check">✓</span><span id="cy2f3">Recommendations</span></li>
+              </ul>
+
+              <button class="btn primary" onclick="openSchedule()">Schedule</button>
+            </div>
+
+            <div class="price-card">
+              <div class="price-top">
+                <div>
+                  <div class="plan">Network Protection</div>
+                  <div class="plan-sub" id="cy3sub">Hardening & guidance</div>
+                </div>
+                <div class="tag">Ongoing</div>
+              </div>
+
+              <div class="price">
+                <span class="cur">CAD$</span>
+                <span class="amt">480</span>
+                <span class="per" id="perMonth6">/ month</span>
+              </div>
+
+              <div class="sep"></div>
+              <ul>
+                <li><span class="check">✓</span><span id="cy3f1">Infrastructure audit</span></li>
+                <li><span class="check">✓</span><span id="cy3f2">Misconfiguration detection</span></li>
+                <li><span class="check">✓</span><span id="cy3f3">Monitoring guidance</span></li>
+              </ul>
+
+              <button class="btn ghost" onclick="openSchedule()">Talk to us</button>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:14px">
+            <h4 id="mtlNoteT">Montreal promo</h4>
+            <p id="mtlNoteD" style="color:var(--muted)">
+              Montreal businesses get 20% off the standard prices shown above.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- FEATURES -->
+      <section class="page" id="features">
+        <div class="section">
+          <div class="section-head">
+            <div>
+              <h3 id="featTitle">Features</h3>
+              <p id="featSub">The building blocks clients care about</p>
+            </div>
+          </div>
+
+          <div class="grid3">
+            <div class="card">
+              <h4 id="f1t">AI Phone Reception</h4>
+              <p id="f1d">Answer calls, qualify leads, book appointments, and capture details automatically.</p>
+            </div>
+            <div class="card">
+              <h4 id="f2t">Lead Capture</h4>
+              <p id="f2d">Collect name, job type, urgency, address, and preferred time — then send it to you.</p>
+            </div>
+            <div class="card">
+              <h4 id="f3t">Scheduling</h4>
+              <p id="f3d">Connect a calendar and use rules (hours, service area, job types) to prevent bad bookings.</p>
+            </div>
+          </div>
+
+          <div class="grid3" style="margin-top:14px">
+            <div class="card">
+              <h4 id="f4t">Bilingual</h4>
+              <p id="f4d">Serve customers in English and French.</p>
+            </div>
+            <div class="card">
+              <h4 id="f5t">Logs & Analytics</h4>
+              <p id="f5d">See what customers asked, common objections, and what converts into bookings.</p>
+            </div>
+            <div class="card">
+              <h4 id="f6t">Secure by design</h4>
+              <p id="f6d">Basic security best practices included for data handling and access control.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SUPPORT -->
+      <section class="page" id="support">
+        <div class="section">
+          <div class="section-head">
+            <div>
+              <h3 id="supTitle">Support</h3>
+              <p id="supSub">Fast help when you need it</p>
+            </div>
+          </div>
+
+          <div class="grid2">
+            <div class="card">
+              <h4 id="contactT">Contact</h4>
+              <p>
+                <b>Phone:</b> <span id="phoneText">438-886-3878</span><br>
+                <b>Email:</b> <a href="mailto:montrealai@outlook.com">montrealai@outlook.com</a><br>
+                <b>Instagram:</b> @MontrealAI
+              </p>
+            </div>
+            <div class="card">
+              <h4 id="faqT">FAQ</h4>
+              <ul class="list">
+                <li><span class="check">✓</span><span id="faq1">Can we do a free demo first? Yes.</span></li>
+                <li><span class="check">✓</span><span id="faq2">Can it book appointments? Yes, with rules.</span></li>
+                <li><span class="check">✓</span><span id="faq3">Can it run 24/7? Yes.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <footer>
+          © <span id="year"></span> Montreal X AI • 438-886-3878 • montrealai@outlook.com
+        </footer>
+      </section>
+    </main>
+  </div>
+
+  <!-- Floating "Call our AI now" -->
+  <button class="call-fab" id="callFab" title="Call our AI now">
+    <span class="pulse"></span>
+    <b id="callFabText">CALL OUR AI NOW</b>
+  </button>
+
+  <!-- Schedule Modal -->
+  <div class="modal-wrap" id="modalWrap" role="dialog" aria-modal="true" aria-label="Schedule a Call">
+    <div class="modal">
+      <div class="modal-head">
+        <b id="modalTitle">Schedule a Call</b>
+        <button class="x" onclick="closeSchedule()" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <p id="modalDesc">
+          Drop your details and we’ll contact you. (Or email us directly at montrealai@outlook.com)
+        </p>
+
+        <div class="modal-grid">
+          <div class="field">
+            <label id="labName">Name</label>
+            <input id="name" placeholder="Your name" />
+          </div>
+          <div class="field">
+            <label id="labBiz">Business</label>
+            <input id="biz" placeholder="Business name" />
+          </div>
+          <div class="field">
+            <label id="labPhone">Phone</label>
+            <input id="phone" placeholder="(514) 000-0000" />
+          </div>
+          <div class="field">
+            <label id="labEmail">Email</label>
+            <input id="email" placeholder="you@email.com" />
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:12px">
+          <label id="labMsg">What do you want automated?</label>
+          <textarea id="msg" rows="4" placeholder="Calls, booking, lead capture, website chat..."></textarea>
+        </div>
+
+        <button class="btn primary" style="width:100%; margin-top:12px" onclick="sendEmail()" id="sendBtn">
+          Send
+        </button>
+        <button class="btn ghost" style="width:100%; margin-top:10px" onclick="closeSchedule()" id="closeBtn">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PHONE_NUMBER = "438-886-3878";
+    const EMAIL = "montrealai@outlook.com";
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("phoneText").textContent = PHONE_NUMBER;
+
+    function flipOnly(el){
+      document.querySelectorAll(".flip").forEach(x => { if(x !== el) x.classList.remove("expanded"); });
+      el.classList.toggle("expanded");
+    }
+
+    function setActiveLink(pageId){
+      document.querySelectorAll(".nav a").forEach(a => a.classList.remove("active"));
+      document.querySelectorAll('[data-page]').forEach(a => {
+        if(a.getAttribute("data-page") === pageId) a.classList.add("active");
+      });
+
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+      const page = document.getElementById(pageId.replace(/M$/,''));
+      if(page) page.classList.add("active");
+
+      closeDrawer();
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
+
+    document.querySelectorAll("#navDesk a").forEach(a=>{
+      a.addEventListener("click",(e)=>{
+        e.preventDefault();
+        setActiveLink(a.dataset.page);
+      });
+    });
+
+    document.querySelectorAll(".drawer [data-page]").forEach(a=>{
+      a.addEventListener("click",(e)=>{
+        e.preventDefault();
+        setActiveLink(a.dataset.page.replace("M",""));
+      });
+    });
+
+    const drawer = document.getElementById("drawer");
+    document.getElementById("openDrawer").addEventListener("click",()=> drawer.style.display="block");
+    document.getElementById("closeDrawer").addEventListener("click",closeDrawer);
+    drawer.addEventListener("click",(e)=>{ if(e.target === drawer) closeDrawer(); });
+    function closeDrawer(){ drawer.style.display="none"; }
+
+    const aiToggle = document.getElementById("aiToggle");
+    const cyberToggle = document.getElementById("cyberToggle");
+    const aiPricing = document.getElementById("aiPricing");
+    const cyberPricing = document.getElementById("cyberPricing");
+
+    aiToggle.addEventListener("click", ()=>{
+      aiToggle.classList.add("active");
+      cyberToggle.classList.remove("active");
+      aiPricing.style.display="grid";
+      cyberPricing.style.display="none";
+    });
+    cyberToggle.addEventListener("click", ()=>{
+      cyberToggle.classList.add("active");
+      aiToggle.classList.remove("active");
+      aiPricing.style.display="none";
+      cyberPricing.style.display="grid";
+    });
+
+    const modalWrap = document.getElementById("modalWrap");
+    function openSchedule(){ modalWrap.style.display="flex"; }
+    function closeSchedule(){ modalWrap.style.display="none"; }
+
+    document.getElementById("scheduleBtn").addEventListener("click",openSchedule);
+    document.getElementById("scheduleBtn2").addEventListener("click",openSchedule);
+    document.getElementById("scheduleBtnMobile").addEventListener("click",openSchedule);
+    document.getElementById("howCta").addEventListener("click",openSchedule);
+
+    modalWrap.addEventListener("click",(e)=>{ if(e.target === modalWrap) closeSchedule(); });
+
+    document.getElementById("emailBtn").addEventListener("click", ()=>{
+      window.location.href = "mailto:"+EMAIL;
+    });
+
+    document.getElementById("copyNumber").addEventListener("click", async ()=>{
+      try{
+        await navigator.clipboard.writeText(PHONE_NUMBER);
+        const btn = document.getElementById("copyNumber");
+        const old = btn.textContent;
+        btn.textContent = "Copied!";
+        setTimeout(()=>btn.textContent=old, 900);
+      }catch(e){
+        alert("Copy failed. Phone: " + PHONE_NUMBER);
+      }
+    });
+
+    document.getElementById("callFab").addEventListener("click", ()=>{
+      window.location.href = "tel:" + PHONE_NUMBER.replace(/[^0-9]/g,"");
+    });
+
+    function sendEmail(){
+      const name = document.getElementById("name").value.trim();
+      const biz = document.getElementById("biz").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const msg = document.getElementById("msg").value.trim();
+
+      const subject = encodeURIComponent("Montreal X AI — Demo request");
+      const body = encodeURIComponent(
+        `Name: ${name}\nBusiness: ${biz}\nPhone: ${phone}\nEmail: ${email}\n\nWhat they want automated:\n${msg}\n`
+      );
+
+      window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
+    }
+
+    // Dark mode toggle + remember
+    const themeToggles = [document.getElementById("themeToggle"), document.getElementById("themeToggleMobile")].filter(Boolean);
+
+    function setTheme(mode){
+      const isDark = mode === "dark";
+      document.body.classList.toggle("dark", isDark);
+      localStorage.setItem("theme", mode);
+      themeToggles.forEach(btn => btn.textContent = isDark ? "☀️" : "🌙");
+    }
+
+    const saved = localStorage.getItem("theme");
+    if(saved === "dark") setTheme("dark");
+    else setTheme("light");
+
+    themeToggles.forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const next = document.body.classList.contains("dark") ? "light" : "dark";
+        setTheme(next);
+      });
+    });
+
+    // Language
+    const text = {
+      en:{
+        promoTag:"PROMO",
+        promoBold:"Montreal businesses get 20% off",
+        promoText:"— prices shown are standard; Montreal rate applies at checkout.",
+
+        topNote:"AI built for real businesses — anywhere.",
+        heroTitle:"Stop missing calls. Book more jobs automatically.",
+        heroDesc:"A 24/7 AI receptionist for calls + website chat that captures leads, answers FAQs, and books appointments — without hiring extra staff.",
+        badge1:"24/7 Calls", badge2:"Lead Capture", badge3:"Appointment Booking", badge4:"English / Français",
+        heroCardTitle:"What you get",
+        stat1:"Never miss a lead", stat1b:"24/7",
+        stat2:"Fast responses", stat2b:"< 10s",
+        stat3:"Setup included", stat3b:"Free",
+
+        missionTitle:"Our Goal",
+        missionSub:"AI BUILT FOR REAL BUSINESSES",
+        missionSide:"More bookings. Faster responses.",
+        missionH1:"The problem",
+        missionP1:"Businesses miss calls and messages daily — leads go cold and customers move on.",
+        missionH2:"The fix",
+        missionP2:"We deploy AI that answers, qualifies, and books — automatically, 24/7 — so you can focus on the work.",
+        missionH3:"Outcome",
+
+        teamTitle:"Executive Team",
+        teamSub:"Click a card to flip",
+
+        howTitle:"How it works",
+        howSub:"From demo → launch in a simple flow",
+        step1T:"1) Quick demo",
+        step1D:"We show you a live example and confirm what you want the AI to do (calls, booking, FAQs, etc.).",
+        step2T:"2) Setup & training",
+        step2D:"We connect your number, add your services, hours, and booking rules.",
+        step2L1:"Greeting + tone",
+        step2L2:"Lead fields",
+        step2L3:"Booking calendar",
+        step3T:"3) Launch + improve",
+        step3D:"We go live, monitor, and tighten responses using real call/message logs.",
+        howNoteT:"What clients see",
+        howNoteD:"Customers call your business → AI answers instantly → captures name + need → books or routes the request → you get the details.",
+
+        pricingTitle:"Pricing",
+        pricingSub:"Plans include setup + support. Usage-based minutes included.",
+        perMonth1:"/ month", perMonth2:"/ month", perMonth3:"/ month", perMonth4:"/ month", perMonth5:"/ month", perMonth6:"/ month",
+        miniLang:"EN/FR",
+
+        ai1sub:"Calls + lead capture",
+        ai2sub:"Calls + booking + web chat",
+        ai3sub:"Multi-line + integrations",
+        tagStarter:"Setup included",
+        tagBest:"Most popular",
+
+        featTitle:"Features",
+        featSub:"The building blocks clients care about",
+        f1t:"AI Phone Reception",
+        f1d:"Answer calls, qualify leads, book appointments, and capture details automatically.",
+        f2t:"Lead Capture",
+        f2d:"Collect name, job type, urgency, address, and preferred time — then send it to you.",
+        f3t:"Scheduling",
+        f3d:"Connect a calendar and use rules (hours, service area, job types) to prevent bad bookings.",
+        f4t:"Bilingual",
+        f4d:"Serve customers in English and French.",
+        f5t:"Logs & Analytics",
+        f5d:"See what customers asked, common objections, and what converts into bookings.",
+        f6t:"Secure by design",
+        f6d:"Basic security best practices included for data handling and access control.",
+
+        supTitle:"Support",
+        supSub:"Fast help when you need it",
+        contactT:"Contact",
+        faqT:"FAQ",
+        faq1:"Can we do a free demo first? Yes.",
+        faq2:"Can it book appointments? Yes, with rules.",
+        faq3:"Can it run 24/7? Yes.",
+
+        mtlNoteT:"Montreal promo",
+        mtlNoteD:"Montreal businesses get 20% off the standard prices shown above.",
+
+        modalTitle:"Schedule a Call",
+        modalDesc:"Drop your details and we’ll contact you. (Or email us directly at montrealai@outlook.com)",
+        labName:"Name", labBiz:"Business", labPhone:"Phone", labEmail:"Email", labMsg:"What do you want automated?",
+        sendBtn:"Send", closeBtn:"Close",
+
+        callFabText:"CALL OUR AI NOW"
+      },
+      fr:{
+        promoTag:"PROMO",
+        promoBold:"Entreprises de Montréal : 20% de rabais",
+        promoText:"— prix affichés = standard; tarif Montréal appliqué au moment de conclure.",
+
+        topNote:"IA pensée pour de vraies entreprises — partout.",
+        heroTitle:"Ne ratez plus d’appels. Prenez plus de rendez-vous automatiquement.",
+        heroDesc:"Une réceptionniste IA 24/7 (appels + chat web) qui capture les leads, répond aux questions et planifie — sans embaucher.",
+        badge1:"Appels 24/7", badge2:"Capture de leads", badge3:"Prise de RDV", badge4:"Anglais / Français",
+        heroCardTitle:"Ce que vous obtenez",
+        stat1:"Ne ratez plus de leads", stat1b:"24/7",
+        stat2:"Réponses rapides", stat2b:"< 10s",
+        stat3:"Installation incluse", stat3b:"Gratuite",
+
+        missionTitle:"Notre objectif",
+        missionSub:"IA POUR DE VRAIES ENTREPRISES",
+        missionSide:"Plus de RDV. Réponses rapides.",
+        missionH1:"Le problème",
+        missionP1:"Les entreprises manquent des appels et messages chaque jour — les clients passent à autre chose.",
+        missionH2:"La solution",
+        missionP2:"Nous déployons une IA qui répond, qualifie et planifie — automatiquement, 24/7 — pour que vous puissiez travailler.",
+        missionH3:"Résultat",
+
+        teamTitle:"Équipe exécutive",
+        teamSub:"Cliquez pour retourner la carte",
+
+        howTitle:"Comment ça marche",
+        howSub:"De la démo au lancement, simplement",
+        step1T:"1) Démo rapide",
+        step1D:"On vous montre un exemple en direct et on valide vos besoins (appels, RDV, FAQ, etc.).",
+        step2T:"2) Installation & entraînement",
+        step2D:"On connecte votre numéro, ajoute vos services, heures et règles de réservation.",
+        step2L1:"Accueil + ton",
+        step2L2:"Champs lead",
+        step2L3:"Calendrier",
+        step3T:"3) Lancement + amélioration",
+        step3D:"On met en ligne, puis on améliore avec les logs réels d’appels/messages.",
+        howNoteT:"Ce que le client vit",
+        howNoteD:"Le client appelle → l’IA répond → collecte les infos → planifie ou route la demande → vous recevez les détails.",
+
+        pricingTitle:"Tarifs",
+        pricingSub:"Plans incluant installation + support. Minutes incluses selon l’usage.",
+        perMonth1:"/ mois", perMonth2:"/ mois", perMonth3:"/ mois", perMonth4:"/ mois", perMonth5:"/ mois", perMonth6:"/ mois",
+        miniLang:"EN/FR",
+
+        ai1sub:"Appels + capture de leads",
+        ai2sub:"Appels + RDV + chat web",
+        ai3sub:"Multi-lignes + intégrations",
+        tagStarter:"Installation incluse",
+        tagBest:"Le plus choisi",
+
+        featTitle:"Fonctionnalités",
+        featSub:"Ce que les clients veulent vraiment",
+        f1t:"Réception IA (téléphone)",
+        f1d:"Répond aux appels, qualifie, planifie et capture les informations automatiquement.",
+        f2t:"Capture de leads",
+        f2d:"Nom, type de job, urgence, adresse, horaire — puis envoi des détails.",
+        f3t:"Planification",
+        f3d:"Connexion calendrier + règles (heures, zone, types de jobs) pour éviter les mauvais RDV.",
+        f4t:"Bilingue",
+        f4d:"Servir les clients en anglais et en français.",
+        f5t:"Logs & Analytique",
+        f5d:"Voir les questions, objections et ce qui convertit en RDV.",
+        f6t:"Sécurisé",
+        f6d:"Bonnes pratiques de base pour la gestion des accès et des données.",
+
+        supTitle:"Support",
+        supSub:"Aide rapide quand vous en avez besoin",
+        contactT:"Contact",
+        faqT:"FAQ",
+        faq1:"Démo gratuite d’abord? Oui.",
+        faq2:"Peut planifier des RDV? Oui, avec règles.",
+        faq3:"24/7? Oui.",
+
+        mtlNoteT:"Promo Montréal",
+        mtlNoteD:"Les entreprises de Montréal ont 20% de rabais sur les prix standards affichés.",
+
+        modalTitle:"Planifier un appel",
+        modalDesc:"Laissez vos infos et on vous contacte. (Ou écrivez à montrealai@outlook.com)",
+        labName:"Nom", labBiz:"Entreprise", labPhone:"Téléphone", labEmail:"Courriel", labMsg:"Quoi automatiser?",
+        sendBtn:"Envoyer", closeBtn:"Fermer",
+
+        callFabText:"APPELER NOTRE IA"
+      }
+    };
+
+    function applyLang(lang){
+      const t = text[lang];
+
+      const set = (id, val) => { const el=document.getElementById(id); if(el) el.textContent = val; };
+
+      set("promoTag", t.promoTag);
+      set("promoBold", t.promoBold);
+      set("promoText", t.promoText);
+
+      set("topNote", t.topNote);
+      set("heroTitle", t.heroTitle);
+      set("heroDesc", t.heroDesc);
+      set("badge1", t.badge1); set("badge2", t.badge2); set("badge3", t.badge3); set("badge4", t.badge4);
+      set("heroCardTitle", t.heroCardTitle);
+      set("stat1", t.stat1); set("stat1b", t.stat1b);
+      set("stat2", t.stat2); set("stat2b", t.stat2b);
+      set("stat3", t.stat3); set("stat3b", t.stat3b);
+
+      set("missionTitle", t.missionTitle);
+      set("missionSub", t.missionSub);
+      set("missionSide", t.missionSide);
+      set("missionH1", t.missionH1);
+      set("missionP1", t.missionP1);
+      set("missionH2", t.missionH2);
+      set("missionP2", t.missionP2);
+      set("missionH3", t.missionH3);
+
+      set("teamTitle", t.teamTitle);
+      set("teamSub", t.teamSub);
+
+      set("howTitle", t.howTitle);
+      set("howSub", t.howSub);
+      set("step1T", t.step1T);
+      set("step1D", t.step1D);
+      set("step2T", t.step2T);
+      set("step2D", t.step2D);
+      set("step2L1", t.step2L1);
+      set("step2L2", t.step2L2);
+      set("step2L3", t.step2L3);
+      set("step3T", t.step3T);
+      set("step3D", t.step3D);
+      set("howNoteT", t.howNoteT);
+      set("howNoteD", t.howNoteD);
+
+      set("pricingTitle", t.pricingTitle);
+      set("pricingSub", t.pricingSub);
+
+      set("ai1sub", t.ai1sub);
+      set("ai2sub", t.ai2sub);
+      set("ai3sub", t.ai3sub);
+
+      set("tagStarter", t.tagStarter);
+      set("tagBest", t.tagBest);
+
+      set("featTitle", t.featTitle);
+      set("featSub", t.featSub);
+      set("f1t", t.f1t); set("f1d", t.f1d);
+      set("f2t", t.f2t); set("f2d", t.f2d);
+      set("f3t", t.f3t); set("f3d", t.f3d);
+      set("f4t", t.f4t); set("f4d", t.f4d);
+      set("f5t", t.f5t); set("f5d", t.f5d);
+      set("f6t", t.f6t); set("f6d", t.f6d);
+
+      set("supTitle", t.supTitle);
+      set("supSub", t.supSub);
+      set("contactT", t.contactT);
+      set("faqT", t.faqT);
+      set("faq1", t.faq1);
+      set("faq2", t.faq2);
+      set("faq3", t.faq3);
+
+      set("mtlNoteT", t.mtlNoteT);
+      set("mtlNoteD", t.mtlNoteD);
+
+      set("modalTitle", t.modalTitle);
+      set("modalDesc", t.modalDesc);
+      set("labName", t.labName);
+      set("labBiz", t.labBiz);
+      set("labPhone", t.labPhone);
+      set("labEmail", t.labEmail);
+      set("labMsg", t.labMsg);
+      set("sendBtn", t.sendBtn);
+      set("closeBtn", t.closeBtn);
+
+      set("callFabText", t.callFabText);
+
+      // mission highlight
+      const mh = document.getElementById("missionHighlight");
+      if(mh){
+        if(lang === "en") mh.innerHTML = "<b>More bookings.</b> Faster replies. No extra staff.";
+        else mh.innerHTML = "<b>Plus de rendez-vous.</b> Réponses plus rapides. Sans personnel en plus.";
+      }
+
+      const en = lang === "en";
+      document.getElementById("enBtn").classList.toggle("active", en);
+      document.getElementById("frBtn").classList.toggle("active", !en);
+      document.getElementById("enBtnM").classList.toggle("active", en);
+      document.getElementById("frBtnM").classList.toggle("active", !en);
+    }
+
+    document.getElementById("enBtn").addEventListener("click",()=>applyLang("en"));
+    document.getElementById("frBtn").addEventListener("click",()=>applyLang("fr"));
+    document.getElementById("enBtnM").addEventListener("click",()=>applyLang("en"));
+    document.getElementById("frBtnM").addEventListener("click",()=>applyLang("fr"));
+
+    applyLang("en");
+
+    document.getElementById("weatherDesk").textContent = "Global • Ready";
+    document.getElementById("weatherMobile").textContent = "Global • Ready";
+  </script>
+</body>
+</html>
