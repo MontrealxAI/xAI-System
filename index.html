@@ -1,3 +1,4 @@
+cat C.html   
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +23,6 @@
       --shadow2: 0 6px 16px rgba(16,24,40,.10);
     }
 
-    /* Dark mode */
     body.dark{
       --bg:#0b1220;
       --card:#0f172a;
@@ -42,14 +42,7 @@
     a{color:inherit;text-decoration:none}
     button{font-family:inherit}
 
-    /* LAYOUT */
-    .app{
-      display:grid;
-      grid-template-columns: 260px 1fr;
-      min-height:100vh;
-    }
-
-    /* BANNER */
+    /* Banner */
     .banner{
       position:sticky;
       top:0;
@@ -76,10 +69,17 @@
       white-space:nowrap;
     }
 
-    /* SIDEBAR */
+    /* Layout */
+    .app{
+      display:grid;
+      grid-template-columns: 260px 1fr;
+      min-height:100vh;
+    }
+
+    /* Sidebar */
     .sidebar{
-      position:sticky; top:0;
-      height:100vh;
+      position:sticky; top:42px; /* below banner */
+      height:calc(100vh - 42px);
       padding:22px 18px;
       border-right:1px solid var(--line);
       background:rgba(255,255,255,.7);
@@ -96,7 +96,7 @@
       width:34px;height:34px;border-radius:10px;
       display:grid;place-items:center;
       background:linear-gradient(135deg,var(--brand),var(--brand2));
-      color:#fff;font-weight:800;
+      color:#fff;font-weight:900;
       box-shadow: 0 10px 20px rgba(11,125,145,.25);
     }
     .brand h1{
@@ -143,14 +143,15 @@
       font-size:12px;
       color:var(--text);
       cursor:pointer;
+      font-weight:800;
     }
     .pill.active{
       border-color:rgba(11,125,145,.35);
       background:rgba(11,125,145,.08);
-      font-weight:800;
+      font-weight:900;
     }
 
-    /* MAIN */
+    /* Main */
     .main{
       padding:18px 26px 90px;
     }
@@ -181,7 +182,7 @@
       padding:11px 14px;
       border-radius:12px;
       cursor:pointer;
-      font-weight:800;
+      font-weight:900;
       transition:.15s ease;
     }
     .btn.primary{
@@ -205,7 +206,7 @@
       padding:11px 0;
     }
 
-    /* HERO */
+    /* Hero */
     .hero{
       background: radial-gradient(900px 400px at 20% 10%, rgba(11,125,145,.18), transparent 55%),
                   radial-gradient(800px 400px at 80% 0%, rgba(7,90,104,.14), transparent 55%),
@@ -238,6 +239,7 @@
     }
     .hero .badges{
       display:flex; flex-wrap:wrap; gap:8px;
+      margin-bottom:14px;
     }
     .badge{
       font-size:12px;
@@ -246,8 +248,15 @@
       background:rgba(11,125,145,.08);
       border:1px solid rgba(11,125,145,.14);
       color:var(--text);
-      font-weight:800;
+      font-weight:900;
     }
+    .hero-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
     .hero-card{
       background:rgba(255,255,255,.8);
       border:1px solid var(--line);
@@ -266,7 +275,7 @@
     .hero-card .stat b{font-size:18px}
     .hero-card .stat span{color:var(--muted); font-size:12px}
 
-    /* SECTION */
+    /* Section */
     .section{
       margin-top:18px;
       background:var(--card);
@@ -326,7 +335,23 @@
       margin-top:1px;
     }
 
-    /* PRICING TOGGLE */
+    /* Quote */
+    .quote{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+    }
+    .avatar{
+      width:42px;height:42px;border-radius:14px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg, rgba(11,125,145,.18), rgba(7,90,104,.10));
+      border:1px solid rgba(11,125,145,.18);
+      font-weight:900;
+    }
+    .quote b{font-size:13px}
+    .quote small{display:block;color:var(--muted);margin-top:2px;font-size:12px}
+
+    /* Pricing toggle */
     .toggle-wrap{
       display:flex; justify-content:center;
       margin:8px 0 16px;
@@ -427,58 +452,17 @@
       padding:12px 14px;
       border-radius:14px;
     }
-
     .featured{
       border-color: rgba(11,125,145,.35);
       box-shadow: 0 18px 50px rgba(11,125,145,.14);
       transform: translateY(-2px);
     }
 
-    /* TEAM FLIP */
-    .team-grid{
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap:14px;
-    }
-    .flip{
-      perspective: 1000px;
-      cursor:pointer;
-      height:170px;
-    }
-    .flip-inner{
-      position:relative; height:100%;
-      transition: transform .65s;
-      transform-style:preserve-3d;
-      border-radius:18px;
-      box-shadow: 0 10px 24px rgba(16,24,40,.10);
-    }
-    body.dark .flip-inner{ box-shadow: 0 14px 32px rgba(0,0,0,.35); }
-    .flip.expanded .flip-inner{transform: rotateY(180deg)}
-    .face{
-      position:absolute; inset:0;
-      backface-visibility:hidden;
-      border-radius:18px;
-      padding:16px;
-      border:1px solid var(--line);
-      background:var(--card);
-      display:flex; flex-direction:column; justify-content:center;
-    }
-    .back{
-      transform: rotateY(180deg);
-      background:linear-gradient(135deg,var(--brand),var(--brand2));
-      color:#fff;
-      border:none;
-    }
-    .name{font-weight:900}
-    .role{color:var(--muted);font-size:12px;margin-top:2px}
-    .back .role{color:rgba(255,255,255,.85)}
-    .back p{margin-top:10px;font-size:13px;line-height:1.55;color:#fff}
-
-    /* PAGES */
+    /* Pages */
     .page{display:none}
     .page.active{display:block}
 
-    /* FLOATING CALL BUTTON */
+    /* Floating call button */
     .call-fab{
       position:fixed;
       right:18px;
@@ -507,7 +491,7 @@
       100%{box-shadow:0 0 0 0 rgba(124,58,237,0)}
     }
 
-    /* MODAL */
+    /* Modal */
     .modal-wrap{
       position:fixed; inset:0;
       display:none;
@@ -517,7 +501,7 @@
       padding:16px;
     }
     .modal{
-      width:min(720px, 100%);
+      width:min(760px, 100%);
       background:var(--card);
       border-radius:18px;
       border:1px solid var(--line);
@@ -549,7 +533,7 @@
       padding:12px;
     }
     .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
-    .field input, .field textarea{
+    .field input, .field textarea, .field select{
       width:100%;
       border:none;
       outline:none;
@@ -557,6 +541,26 @@
       resize:none;
       background:transparent;
       color:var(--text);
+      font-family:inherit;
+    }
+    .inline-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .chip{
+      border:1px solid var(--line);
+      background:var(--card);
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .chip.active{
+      border-color:rgba(11,125,145,.35);
+      background:rgba(11,125,145,.08);
     }
 
     footer{
@@ -567,10 +571,10 @@
       padding:18px 8px;
     }
 
-    /* MOBILE */
+    /* Mobile */
     .mobile-top{
       display:none;
-      position:sticky; top:0;
+      position:sticky; top:42px; /* under banner */
       z-index:1300;
       background:rgba(255,255,255,.82);
       backdrop-filter: blur(10px);
@@ -618,14 +622,12 @@
       .grid3{grid-template-columns:1fr}
       .grid2{grid-template-columns:1fr}
       .pricing-grid{grid-template-columns:1fr}
-      .team-grid{grid-template-columns:1fr}
       .modal-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
 
 <body>
-  <!-- Promo Banner -->
   <div class="banner">
     <span class="tag" id="promoTag">PROMO</span>
     <b id="promoBold">Montreal businesses get 20% off</b>
@@ -641,7 +643,7 @@
     </div>
     <div style="display:flex;gap:10px;align-items:center">
       <button class="btn ghost icon" id="themeToggleMobile" title="Toggle dark mode">🌙</button>
-      <button class="btn primary" id="scheduleBtnMobile">Schedule</button>
+      <button class="btn primary" id="scheduleBtnMobile">Book Free Demo</button>
     </div>
   </div>
 
@@ -673,6 +675,12 @@
           <a href="#" data-page="featuresM">Features</a>
           <a href="#" data-page="supportM">Support</a>
         </div>
+      </div>
+
+      <div class="side-group">
+        <div class="side-label">Action</div>
+        <button class="btn primary" style="width:100%" onclick="openSchedule()">Book Free Demo</button>
+        <button class="btn ghost" style="width:100%;margin-top:10px" onclick="callNow()">Test Our AI (Call)</button>
       </div>
     </div>
   </div>
@@ -706,7 +714,8 @@
 
       <div class="side-group">
         <div class="side-label">Quick action</div>
-        <button class="btn primary" id="scheduleBtn" style="width:100%">Schedule a Call</button>
+        <button class="btn primary" id="scheduleBtn" style="width:100%">Book Free Demo</button>
+        <button class="btn ghost" id="callBtn" style="width:100%; margin-top:10px">Test Our AI (Call)</button>
         <button class="btn ghost" id="emailBtn" style="width:100%; margin-top:10px">Email us</button>
       </div>
     </aside>
@@ -716,12 +725,12 @@
       <div class="topbar">
         <div class="top-left">
           <span class="dot"></span>
-          <span id="topNote">AI built for real businesses — anywhere.</span>
+          <span id="topNote">Book more jobs by catching calls you currently miss.</span>
         </div>
         <div class="cta">
           <button class="btn ghost icon" id="themeToggle" title="Toggle dark mode">🌙</button>
           <button class="btn ghost" id="copyNumber">Copy Phone</button>
-          <button class="btn primary" id="scheduleBtn2">Schedule a Call</button>
+          <button class="btn primary" id="scheduleBtn2">Book Free Demo</button>
         </div>
       </div>
 
@@ -730,16 +739,33 @@
         <div class="hero">
           <div class="hero-grid">
             <div>
-              <h2 id="heroTitle">Stop missing calls. Book more jobs automatically.</h2>
+              <h2 id="heroTitle">Stop missing calls. Book more jobs automatically — 24/7.</h2>
               <p id="heroDesc">
-                A 24/7 AI receptionist for calls + website chat that captures leads, answers FAQs, and books appointments —
-                without hiring extra staff.
+                When customers call your business, our AI answers instantly — captures details, qualifies the request, and books appointments
+                (or routes urgent calls). No voicemail. No missed leads. No extra staff.
               </p>
+
               <div class="badges">
                 <span class="badge" id="badge1">24/7 Calls</span>
                 <span class="badge" id="badge2">Lead Capture</span>
                 <span class="badge" id="badge3">Appointment Booking</span>
                 <span class="badge" id="badge4">English / Français</span>
+              </div>
+
+              <div class="badges" style="margin-top:10px">
+                <span class="badge" id="trust1">No long-term contracts</span>
+                <span class="badge" id="trust2">Cancel anytime</span>
+                <span class="badge" id="trust3">Setup included</span>
+                <span class="badge" id="trust4">Pilot-friendly onboarding</span>
+              </div>
+
+              <div class="hero-actions">
+                <button class="btn primary" onclick="openSchedule()" id="heroCta">Book Free Demo</button>
+                <button class="btn ghost" onclick="callNow()" id="heroCta2">Test Our AI (Call)</button>
+              </div>
+
+              <div style="margin-top:12px; color:var(--muted); font-size:13px" id="heroTestLine">
+                Fast demo. Real call flow for your business. Pick a time: tomorrow or Thursday.
               </div>
             </div>
 
@@ -761,101 +787,83 @@
           </div>
         </div>
 
+        <!-- PROOF + ROI ABOVE THE FOLD -->
         <div class="section">
           <div class="section-head">
             <div>
-              <h3 id="missionTitle">Our Goal</h3>
-              <p id="missionSub">AI BUILT FOR REAL BUSINESSES</p>
+              <h3 id="quickWinTitle">Why this works</h3>
+              <p id="quickWinSub">Owners lose money when calls go to voicemail.</p>
             </div>
-            <div style="color:var(--muted);font-size:13px" id="missionSide">More bookings. Faster responses.</div>
+            <button class="btn primary" onclick="openSchedule()" id="quickWinCta">Book Free Demo</button>
           </div>
 
           <div class="grid2">
             <div class="card">
-              <h4 id="missionH1">The problem</h4>
-              <p id="missionP1">
-                Businesses miss calls and messages daily — leads go cold and customers move on.
+              <h4 id="roiH1">The simple math</h4>
+              <p id="roiP1">
+                If you miss just <b>2 calls/week</b> and only <b>1 turns into a job</b>, that can add up fast.
+                Our AI costs less than one missed job.
               </p>
+              <ul class="list">
+                <li><span class="check">✓</span><span id="roiL1">After-hours calls answered</span></li>
+                <li><span class="check">✓</span><span id="roiL2">Details captured automatically</span></li>
+                <li><span class="check">✓</span><span id="roiL3">Bookings routed to you</span></li>
+              </ul>
             </div>
+
             <div class="card">
-              <h4 id="missionH2">The fix</h4>
-              <p id="missionP2">
-                We deploy AI that answers, qualifies, and books — automatically, 24/7 — so you can focus on the work.
-              </p>
+              <h4 id="proofTitle">Pilot feedback</h4>
+              <div class="quote" style="margin-top:8px">
+                <div class="avatar">PC</div>
+                <div>
+                  <p id="q1" style="color:var(--muted);font-size:13px;line-height:1.6">
+                    “We used to miss after-hours calls constantly. Now the AI captures everything and we follow up with real details.”
+                  </p>
+                  <b id="q1b">Plumbing company — Montreal</b>
+                  <small id="q1s">Pilot client</small>
+                </div>
+              </div>
+
+              <div class="quote" style="margin-top:12px">
+                <div class="avatar">HV</div>
+                <div>
+                  <p id="q2" style="color:var(--muted);font-size:13px;line-height:1.6">
+                    “It answers fast and filters out nonsense. We only get the calls that matter.”
+                  </p>
+                  <b id="q2b">HVAC contractor — Laval</b>
+                  <small id="q2s">Early deployment</small>
+                </div>
+              </div>
             </div>
           </div>
 
           <div class="card" style="margin-top:14px">
-            <h4 id="missionH3">Outcome</h4>
-            <p id="missionHighlight"><b>More bookings.</b> Faster replies. No extra staff.</p>
+            <h4 id="proofNoteT">Want a demo on your number?</h4>
+            <p id="proofNoteD" style="color:var(--muted)">
+              We’ll set up a short call flow for your business and show exactly what the AI says and how it books/routs requests.
+            </p>
           </div>
         </div>
 
+        <!-- WHO IT'S FOR -->
         <div class="section">
           <div class="section-head">
             <div>
-              <h3 id="teamTitle">Executive Team</h3>
-              <p id="teamSub">Click a card to flip</p>
+              <h3 id="whoTitle">Perfect for</h3>
+              <p id="whoSub">If your jobs come from phone calls.</p>
             </div>
           </div>
 
-          <div class="team-grid">
-            <div class="flip" onclick="flipOnly(this)">
-              <div class="flip-inner">
-                <div class="face">
-                  <div class="name">Anisha</div>
-                  <div class="role" id="anishaRole">Marketing & Client Relations</div>
-                  <p style="margin-top:10px;color:var(--muted);font-size:13px" id="anishaFront">
-                    Outreach, onboarding, and long-term client success.
-                  </p>
-                </div>
-                <div class="face back">
-                  <div class="name">Anisha</div>
-                  <div class="role">Marketing & Client Relations</div>
-                  <p id="anishaBack">
-                    Oversees outreach, onboarding, and client relationships — ensuring solutions directly support growth and customer experience.
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div class="grid3">
+            <div class="card"><h4 id="w1">Plumbers</h4><p id="w1d">Emergency calls & after-hours leads.</p></div>
+            <div class="card"><h4 id="w2">HVAC</h4><p id="w2d">High-intent callers, fast booking.</p></div>
+            <div class="card"><h4 id="w3">Electricians</h4><p id="w3d">Qualify & route urgent jobs.</p></div>
+          </div>
 
-            <div class="flip" onclick="flipOnly(this)">
-              <div class="flip-inner">
-                <div class="face">
-                  <div class="name">Jaiden</div>
-                  <div class="role" id="jaidenRole">Cybersecurity Director</div>
-                  <p style="margin-top:10px;color:var(--muted);font-size:13px" id="jaidenFront">
-                    Security strategy and risk reduction.
-                  </p>
-                </div>
-                <div class="face back">
-                  <div class="name">Jaiden</div>
-                  <div class="role">Cybersecurity Director</div>
-                  <p id="jaidenBack">
-                    Leads security strategy, penetration testing, and risk assessments to protect infrastructure, data, and operational continuity.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="flip" onclick="flipOnly(this)">
-              <div class="flip-inner">
-                <div class="face">
-                  <div class="name">Saeed</div>
-                  <div class="role" id="saeedRole">Operations & Infrastructure</div>
-                  <p style="margin-top:10px;color:var(--muted);font-size:13px" id="saeedFront">
-                    Uptime, integrations, and reliability.
-                  </p>
-                </div>
-                <div class="face back">
-                  <div class="name">Saeed</div>
-                  <div class="role">Operations & Infrastructure</div>
-                  <p id="saeedBack">
-                    Manages backend systems, integrations, and uptime so services run reliably 24/7.
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div class="grid3" style="margin-top:14px">
+            <div class="card"><h4 id="w4">Roofing</h4><p id="w4d">Capture storm leads quickly.</p></div>
+            <div class="card"><h4 id="w5">Clinics</h4><p id="w5d">Bookings + FAQs, less front desk load.</p></div>
+            <div class="card"><h4 id="w6">Med spas</h4><p id="w6d">Appointments + follow-up routing.</p></div>
           </div>
         </div>
       </section>
@@ -866,35 +874,35 @@
           <div class="section-head">
             <div>
               <h3 id="howTitle">How it works</h3>
-              <p id="howSub">From demo → launch in a simple flow</p>
+              <p id="howSub">Demo → Setup → Live in days</p>
             </div>
-            <button class="btn primary" id="howCta">Get a free demo</button>
+            <button class="btn primary" onclick="openSchedule()" id="howCta">Book Free Demo</button>
           </div>
 
           <div class="grid3">
             <div class="card">
               <h4 id="step1T">1) Quick demo</h4>
-              <p id="step1D">We show you a live example and confirm what you want the AI to do (calls, booking, FAQs, etc.).</p>
+              <p id="step1D">We show you the flow and confirm what you want: calls, booking, FAQs, routing.</p>
             </div>
             <div class="card">
-              <h4 id="step2T">2) Setup & training</h4>
-              <p id="step2D">We connect your number, add your services, hours, and booking rules.</p>
+              <h4 id="step2T">2) Setup & rules</h4>
+              <p id="step2D">We connect your number, hours, services, service area, and booking rules.</p>
               <ul class="list">
                 <li><span class="check">✓</span><span id="step2L1">Greeting + tone</span></li>
                 <li><span class="check">✓</span><span id="step2L2">Lead fields</span></li>
-                <li><span class="check">✓</span><span id="step2L3">Booking calendar</span></li>
+                <li><span class="check">✓</span><span id="step2L3">Calendar rules</span></li>
               </ul>
             </div>
             <div class="card">
               <h4 id="step3T">3) Launch + improve</h4>
-              <p id="step3D">We go live, monitor, and tighten responses using real call/message logs.</p>
+              <p id="step3D">We go live, monitor, and tighten responses using real call patterns.</p>
             </div>
           </div>
 
           <div class="card" style="margin-top:14px">
-            <h4 id="howNoteT">What clients see</h4>
+            <h4 id="howNoteT">What you receive</h4>
             <p id="howNoteD" style="color:var(--muted)">
-              Customers call your business → AI answers instantly → captures name + need → books or routes the request → you get the details.
+              A clean summary for each call: name, number, need, urgency, address/service area, and preferred time.
             </p>
           </div>
         </div>
@@ -908,6 +916,7 @@
               <h3 id="pricingTitle">Pricing</h3>
               <p id="pricingSub">Plans include setup + support. Usage-based minutes included.</p>
             </div>
+            <button class="btn primary" onclick="openSchedule()" id="pricingCta">Book Free Demo</button>
           </div>
 
           <div class="toggle-wrap">
@@ -917,7 +926,7 @@
             </div>
           </div>
 
-          <!-- AI Pricing (prices raised 20%) -->
+          <!-- AI Pricing -->
           <div id="aiPricing" class="pricing-grid">
             <div class="price-card">
               <div class="price-top">
@@ -948,7 +957,7 @@
                 <li><span class="check">✓</span><span id="ai1f3">Call routing rules</span></li>
               </ul>
 
-              <button class="btn ghost" onclick="openSchedule()" id="choose1">Choose plan</button>
+              <button class="btn ghost" onclick="openSchedule()" id="choose1">Book Free Demo</button>
             </div>
 
             <div class="price-card featured">
@@ -980,7 +989,7 @@
                 <li><span class="check">✓</span><span id="ai2f3">Follow-up + lead routing</span></li>
               </ul>
 
-              <button class="btn primary" onclick="openSchedule()" id="choose2">Schedule demo</button>
+              <button class="btn primary" onclick="openSchedule()" id="choose2">Book Free Demo</button>
             </div>
 
             <div class="price-card">
@@ -1012,11 +1021,11 @@
                 <li><span class="check">✓</span><span id="ai3f3">Dashboards + reporting</span></li>
               </ul>
 
-              <button class="btn ghost" onclick="openSchedule()" id="choose3">Talk to us</button>
+              <button class="btn ghost" onclick="openSchedule()" id="choose3">Book Free Demo</button>
             </div>
           </div>
 
-          <!-- Cyber Pricing (prices raised 20%) -->
+          <!-- Cyber Pricing -->
           <div id="cyberPricing" class="pricing-grid" style="display:none">
             <div class="price-card">
               <div class="price-top">
@@ -1040,7 +1049,7 @@
                 <li><span class="check">✓</span><span id="cy1f3">Clear remediation guidance</span></li>
               </ul>
 
-              <button class="btn ghost" onclick="openSchedule()">Choose plan</button>
+              <button class="btn ghost" onclick="openSchedule()">Book Free Demo</button>
             </div>
 
             <div class="price-card featured">
@@ -1065,7 +1074,7 @@
                 <li><span class="check">✓</span><span id="cy2f3">Recommendations</span></li>
               </ul>
 
-              <button class="btn primary" onclick="openSchedule()">Schedule</button>
+              <button class="btn primary" onclick="openSchedule()">Book Free Demo</button>
             </div>
 
             <div class="price-card">
@@ -1090,7 +1099,7 @@
                 <li><span class="check">✓</span><span id="cy3f3">Monitoring guidance</span></li>
               </ul>
 
-              <button class="btn ghost" onclick="openSchedule()">Talk to us</button>
+              <button class="btn ghost" onclick="openSchedule()">Book Free Demo</button>
             </div>
           </div>
 
@@ -1100,7 +1109,6 @@
               Montreal businesses get 20% off the standard prices shown above.
             </p>
           </div>
-
         </div>
       </section>
 
@@ -1112,6 +1120,7 @@
               <h3 id="featTitle">Features</h3>
               <p id="featSub">The building blocks clients care about</p>
             </div>
+            <button class="btn primary" onclick="openSchedule()">Book Free Demo</button>
           </div>
 
           <div class="grid3">
@@ -1136,7 +1145,7 @@
             </div>
             <div class="card">
               <h4 id="f5t">Logs & Analytics</h4>
-              <p id="f5d">See what customers asked, common objections, and what converts into bookings.</p>
+              <p id="f5d">See what customers asked, what converts, and where leads drop off.</p>
             </div>
             <div class="card">
               <h4 id="f6t">Secure by design</h4>
@@ -1154,6 +1163,7 @@
               <h3 id="supTitle">Support</h3>
               <p id="supSub">Fast help when you need it</p>
             </div>
+            <button class="btn primary" onclick="openSchedule()">Book Free Demo</button>
           </div>
 
           <div class="grid2">
@@ -1174,32 +1184,38 @@
               </ul>
             </div>
           </div>
-        </div>
 
-        <footer>
-          © <span id="year"></span> Montreal X AI • 438-886-3878 • montrealai@outlook.com
-        </footer>
+          <footer>
+            © <span id="year"></span> Montreal X AI • 438-886-3878 • montrealai@outlook.com
+          </footer>
+        </div>
       </section>
     </main>
   </div>
 
-  <!-- Floating "Call our AI now" -->
-  <button class="call-fab" id="callFab" title="Call our AI now">
+  <!-- Floating "Test our AI" -->
+  <button class="call-fab" id="callFab" title="Test our AI (Call)">
     <span class="pulse"></span>
-    <b id="callFabText">CALL OUR AI NOW</b>
+    <b id="callFabText">TEST OUR AI (CALL NOW)</b>
   </button>
 
   <!-- Schedule Modal -->
-  <div class="modal-wrap" id="modalWrap" role="dialog" aria-modal="true" aria-label="Schedule a Call">
+  <div class="modal-wrap" id="modalWrap" role="dialog" aria-modal="true" aria-label="Book Free Demo">
     <div class="modal">
       <div class="modal-head">
-        <b id="modalTitle">Schedule a Call</b>
+        <b id="modalTitle">Book Free Demo</b>
         <button class="x" onclick="closeSchedule()" aria-label="Close">✕</button>
       </div>
       <div class="modal-body">
         <p id="modalDesc">
-          Drop your details and we’ll contact you. (Or email us directly at montrealai@outlook.com)
+          Pick a quick time option and drop your details. We’ll confirm and show your exact call flow.
         </p>
+
+        <div class="inline-row" aria-label="Time options">
+          <button class="chip active" id="chipTomorrow" type="button">Tomorrow</button>
+          <button class="chip" id="chipThursday" type="button">Thursday</button>
+          <button class="chip" id="chipOther" type="button">Other</button>
+        </div>
 
         <div class="modal-grid">
           <div class="field">
@@ -1222,7 +1238,7 @@
 
         <div class="field" style="margin-top:12px">
           <label id="labMsg">What do you want automated?</label>
-          <textarea id="msg" rows="4" placeholder="Calls, booking, lead capture, website chat..."></textarea>
+          <textarea id="msg" rows="4" placeholder="Calls, booking, after-hours, FAQs, website chat..."></textarea>
         </div>
 
         <button class="btn primary" style="width:100%; margin-top:12px" onclick="sendEmail()" id="sendBtn">
@@ -1242,11 +1258,7 @@
     document.getElementById("year").textContent = new Date().getFullYear();
     document.getElementById("phoneText").textContent = PHONE_NUMBER;
 
-    function flipOnly(el){
-      document.querySelectorAll(".flip").forEach(x => { if(x !== el) x.classList.remove("expanded"); });
-      el.classList.toggle("expanded");
-    }
-
+    // Page navigation
     function setActiveLink(pageId){
       document.querySelectorAll(".nav a").forEach(a => a.classList.remove("active"));
       document.querySelectorAll('[data-page]').forEach(a => {
@@ -1275,12 +1287,14 @@
       });
     });
 
+    // Drawer
     const drawer = document.getElementById("drawer");
     document.getElementById("openDrawer").addEventListener("click",()=> drawer.style.display="block");
     document.getElementById("closeDrawer").addEventListener("click",closeDrawer);
     drawer.addEventListener("click",(e)=>{ if(e.target === drawer) closeDrawer(); });
     function closeDrawer(){ drawer.style.display="none"; }
 
+    // Pricing toggle
     const aiToggle = document.getElementById("aiToggle");
     const cyberToggle = document.getElementById("cyberToggle");
     const aiPricing = document.getElementById("aiPricing");
@@ -1299,17 +1313,21 @@
       cyberPricing.style.display="grid";
     });
 
+    // Modal
     const modalWrap = document.getElementById("modalWrap");
     function openSchedule(){ modalWrap.style.display="flex"; }
     function closeSchedule(){ modalWrap.style.display="none"; }
 
+    window.openSchedule = openSchedule;
+    window.closeSchedule = closeSchedule;
+
     document.getElementById("scheduleBtn").addEventListener("click",openSchedule);
     document.getElementById("scheduleBtn2").addEventListener("click",openSchedule);
     document.getElementById("scheduleBtnMobile").addEventListener("click",openSchedule);
-    document.getElementById("howCta").addEventListener("click",openSchedule);
 
     modalWrap.addEventListener("click",(e)=>{ if(e.target === modalWrap) closeSchedule(); });
 
+    // Email + call
     document.getElementById("emailBtn").addEventListener("click", ()=>{
       window.location.href = "mailto:"+EMAIL;
     });
@@ -1326,8 +1344,27 @@
       }
     });
 
-    document.getElementById("callFab").addEventListener("click", ()=>{
+    function callNow(){
       window.location.href = "tel:" + PHONE_NUMBER.replace(/[^0-9]/g,"");
+    }
+    window.callNow = callNow;
+
+    document.getElementById("callBtn").addEventListener("click", callNow);
+    document.getElementById("callFab").addEventListener("click", callNow);
+
+    // Time chips
+    let timeChoice = "Tomorrow";
+    const chips = [
+      {id:"chipTomorrow", val:"Tomorrow"},
+      {id:"chipThursday", val:"Thursday"},
+      {id:"chipOther", val:"Other"}
+    ];
+    chips.forEach(c=>{
+      document.getElementById(c.id).addEventListener("click", ()=>{
+        timeChoice = c.val;
+        chips.forEach(x=>document.getElementById(x.id).classList.remove("active"));
+        document.getElementById(c.id).classList.add("active");
+      });
     });
 
     function sendEmail(){
@@ -1337,13 +1374,15 @@
       const email = document.getElementById("email").value.trim();
       const msg = document.getElementById("msg").value.trim();
 
-      const subject = encodeURIComponent("Montreal X AI — Demo request");
+      const subject = encodeURIComponent("Montreal X AI — Free demo request");
       const body = encodeURIComponent(
+        `Time preference: ${timeChoice}\n` +
         `Name: ${name}\nBusiness: ${biz}\nPhone: ${phone}\nEmail: ${email}\n\nWhat they want automated:\n${msg}\n`
       );
 
       window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
     }
+    window.sendEmail = sendEmail;
 
     // Dark mode toggle + remember
     const themeToggles = [document.getElementById("themeToggle"), document.getElementById("themeToggleMobile")].filter(Boolean);
@@ -1366,270 +1405,68 @@
       });
     });
 
-    // Language
+    // Language (optional). Keeping buttons present; minimal swap to avoid breaking.
     const text = {
       en:{
         promoTag:"PROMO",
         promoBold:"Montreal businesses get 20% off",
         promoText:"— prices shown are standard; Montreal rate applies at checkout.",
-
-        topNote:"AI built for real businesses — anywhere.",
-        heroTitle:"Stop missing calls. Book more jobs automatically.",
-        heroDesc:"A 24/7 AI receptionist for calls + website chat that captures leads, answers FAQs, and books appointments — without hiring extra staff.",
-        badge1:"24/7 Calls", badge2:"Lead Capture", badge3:"Appointment Booking", badge4:"English / Français",
-        heroCardTitle:"What you get",
-        stat1:"Never miss a lead", stat1b:"24/7",
-        stat2:"Fast responses", stat2b:"< 10s",
-        stat3:"Setup included", stat3b:"Free",
-
-        missionTitle:"Our Goal",
-        missionSub:"AI BUILT FOR REAL BUSINESSES",
-        missionSide:"More bookings. Faster responses.",
-        missionH1:"The problem",
-        missionP1:"Businesses miss calls and messages daily — leads go cold and customers move on.",
-        missionH2:"The fix",
-        missionP2:"We deploy AI that answers, qualifies, and books — automatically, 24/7 — so you can focus on the work.",
-        missionH3:"Outcome",
-
-        teamTitle:"Executive Team",
-        teamSub:"Click a card to flip",
-
-        howTitle:"How it works",
-        howSub:"From demo → launch in a simple flow",
-        step1T:"1) Quick demo",
-        step1D:"We show you a live example and confirm what you want the AI to do (calls, booking, FAQs, etc.).",
-        step2T:"2) Setup & training",
-        step2D:"We connect your number, add your services, hours, and booking rules.",
-        step2L1:"Greeting + tone",
-        step2L2:"Lead fields",
-        step2L3:"Booking calendar",
-        step3T:"3) Launch + improve",
-        step3D:"We go live, monitor, and tighten responses using real call/message logs.",
-        howNoteT:"What clients see",
-        howNoteD:"Customers call your business → AI answers instantly → captures name + need → books or routes the request → you get the details.",
-
-        pricingTitle:"Pricing",
-        pricingSub:"Plans include setup + support. Usage-based minutes included.",
-        perMonth1:"/ month", perMonth2:"/ month", perMonth3:"/ month", perMonth4:"/ month", perMonth5:"/ month", perMonth6:"/ month",
-        miniLang:"EN/FR",
-
-        ai1sub:"Calls + lead capture",
-        ai2sub:"Calls + booking + web chat",
-        ai3sub:"Multi-line + integrations",
-        tagStarter:"Setup included",
-        tagBest:"Most popular",
-
-        featTitle:"Features",
-        featSub:"The building blocks clients care about",
-        f1t:"AI Phone Reception",
-        f1d:"Answer calls, qualify leads, book appointments, and capture details automatically.",
-        f2t:"Lead Capture",
-        f2d:"Collect name, job type, urgency, address, and preferred time — then send it to you.",
-        f3t:"Scheduling",
-        f3d:"Connect a calendar and use rules (hours, service area, job types) to prevent bad bookings.",
-        f4t:"Bilingual",
-        f4d:"Serve customers in English and French.",
-        f5t:"Logs & Analytics",
-        f5d:"See what customers asked, common objections, and what converts into bookings.",
-        f6t:"Secure by design",
-        f6d:"Basic security best practices included for data handling and access control.",
-
-        supTitle:"Support",
-        supSub:"Fast help when you need it",
-        contactT:"Contact",
-        faqT:"FAQ",
-        faq1:"Can we do a free demo first? Yes.",
-        faq2:"Can it book appointments? Yes, with rules.",
-        faq3:"Can it run 24/7? Yes.",
-
-        mtlNoteT:"Montreal promo",
-        mtlNoteD:"Montreal businesses get 20% off the standard prices shown above.",
-
-        modalTitle:"Schedule a Call",
-        modalDesc:"Drop your details and we’ll contact you. (Or email us directly at montrealai@outlook.com)",
-        labName:"Name", labBiz:"Business", labPhone:"Phone", labEmail:"Email", labMsg:"What do you want automated?",
-        sendBtn:"Send", closeBtn:"Close",
-
-        callFabText:"CALL OUR AI NOW"
+        topNote:"Book more jobs by catching calls you currently miss.",
+        heroTitle:"Stop missing calls. Book more jobs automatically — 24/7.",
+        heroDesc:"When customers call your business, our AI answers instantly — captures details, qualifies the request, and books appointments (or routes urgent calls). No voicemail. No missed leads. No extra staff.",
+        heroTestLine:"Fast demo. Real call flow for your business. Pick a time: tomorrow or Thursday.",
+        heroCta:"Book Free Demo",
+        heroCta2:"Test Our AI (Call)",
+        scheduleBtn:"Book Free Demo",
+        scheduleBtn2:"Book Free Demo",
+        scheduleBtnMobile:"Book Free Demo",
+        modalTitle:"Book Free Demo",
+        modalDesc:"Pick a quick time option and drop your details. We’ll confirm and show your exact call flow.",
+        sendBtn:"Send",
+        closeBtn:"Close",
+        callFabText:"TEST OUR AI (CALL NOW)"
       },
       fr:{
         promoTag:"PROMO",
         promoBold:"Entreprises de Montréal : 20% de rabais",
-        promoText:"— prix affichés = standard; tarif Montréal appliqué au moment de conclure.",
-
-        topNote:"IA pensée pour de vraies entreprises — partout.",
-        heroTitle:"Ne ratez plus d’appels. Prenez plus de rendez-vous automatiquement.",
-        heroDesc:"Une réceptionniste IA 24/7 (appels + chat web) qui capture les leads, répond aux questions et planifie — sans embaucher.",
-        badge1:"Appels 24/7", badge2:"Capture de leads", badge3:"Prise de RDV", badge4:"Anglais / Français",
-        heroCardTitle:"Ce que vous obtenez",
-        stat1:"Ne ratez plus de leads", stat1b:"24/7",
-        stat2:"Réponses rapides", stat2b:"< 10s",
-        stat3:"Installation incluse", stat3b:"Gratuite",
-
-        missionTitle:"Notre objectif",
-        missionSub:"IA POUR DE VRAIES ENTREPRISES",
-        missionSide:"Plus de RDV. Réponses rapides.",
-        missionH1:"Le problème",
-        missionP1:"Les entreprises manquent des appels et messages chaque jour — les clients passent à autre chose.",
-        missionH2:"La solution",
-        missionP2:"Nous déployons une IA qui répond, qualifie et planifie — automatiquement, 24/7 — pour que vous puissiez travailler.",
-        missionH3:"Résultat",
-
-        teamTitle:"Équipe exécutive",
-        teamSub:"Cliquez pour retourner la carte",
-
-        howTitle:"Comment ça marche",
-        howSub:"De la démo au lancement, simplement",
-        step1T:"1) Démo rapide",
-        step1D:"On vous montre un exemple en direct et on valide vos besoins (appels, RDV, FAQ, etc.).",
-        step2T:"2) Installation & entraînement",
-        step2D:"On connecte votre numéro, ajoute vos services, heures et règles de réservation.",
-        step2L1:"Accueil + ton",
-        step2L2:"Champs lead",
-        step2L3:"Calendrier",
-        step3T:"3) Lancement + amélioration",
-        step3D:"On met en ligne, puis on améliore avec les logs réels d’appels/messages.",
-        howNoteT:"Ce que le client vit",
-        howNoteD:"Le client appelle → l’IA répond → collecte les infos → planifie ou route la demande → vous recevez les détails.",
-
-        pricingTitle:"Tarifs",
-        pricingSub:"Plans incluant installation + support. Minutes incluses selon l’usage.",
-        perMonth1:"/ mois", perMonth2:"/ mois", perMonth3:"/ mois", perMonth4:"/ mois", perMonth5:"/ mois", perMonth6:"/ mois",
-        miniLang:"EN/FR",
-
-        ai1sub:"Appels + capture de leads",
-        ai2sub:"Appels + RDV + chat web",
-        ai3sub:"Multi-lignes + intégrations",
-        tagStarter:"Installation incluse",
-        tagBest:"Le plus choisi",
-
-        featTitle:"Fonctionnalités",
-        featSub:"Ce que les clients veulent vraiment",
-        f1t:"Réception IA (téléphone)",
-        f1d:"Répond aux appels, qualifie, planifie et capture les informations automatiquement.",
-        f2t:"Capture de leads",
-        f2d:"Nom, type de job, urgence, adresse, horaire — puis envoi des détails.",
-        f3t:"Planification",
-        f3d:"Connexion calendrier + règles (heures, zone, types de jobs) pour éviter les mauvais RDV.",
-        f4t:"Bilingue",
-        f4d:"Servir les clients en anglais et en français.",
-        f5t:"Logs & Analytique",
-        f5d:"Voir les questions, objections et ce qui convertit en RDV.",
-        f6t:"Sécurisé",
-        f6d:"Bonnes pratiques de base pour la gestion des accès et des données.",
-
-        supTitle:"Support",
-        supSub:"Aide rapide quand vous en avez besoin",
-        contactT:"Contact",
-        faqT:"FAQ",
-        faq1:"Démo gratuite d’abord? Oui.",
-        faq2:"Peut planifier des RDV? Oui, avec règles.",
-        faq3:"24/7? Oui.",
-
-        mtlNoteT:"Promo Montréal",
-        mtlNoteD:"Les entreprises de Montréal ont 20% de rabais sur les prix standards affichés.",
-
-        modalTitle:"Planifier un appel",
-        modalDesc:"Laissez vos infos et on vous contacte. (Ou écrivez à montrealai@outlook.com)",
-        labName:"Nom", labBiz:"Entreprise", labPhone:"Téléphone", labEmail:"Courriel", labMsg:"Quoi automatiser?",
-        sendBtn:"Envoyer", closeBtn:"Fermer",
-
-        callFabText:"APPELER NOTRE IA"
+        promoText:"— prix standards affichés; tarif Montréal appliqué au moment de conclure.",
+        topNote:"Plus de jobs en capturant les appels manqués.",
+        heroTitle:"Ne ratez plus d’appels. Plus de jobs automatiquement — 24/7.",
+        heroDesc:"Quand les clients appellent, notre IA répond instantanément — capture les infos, qualifie la demande et planifie (ou route les urgences). Pas de boîte vocale. Pas de leads perdus.",
+        heroTestLine:"Démo rapide. Flow réel pour votre entreprise. Choisissez : demain ou jeudi.",
+        heroCta:"Démo gratuite",
+        heroCta2:"Tester l’IA (Appeler)",
+        scheduleBtn:"Démo gratuite",
+        scheduleBtn2:"Démo gratuite",
+        scheduleBtnMobile:"Démo gratuite",
+        modalTitle:"Démo gratuite",
+        modalDesc:"Choisissez un moment et laissez vos infos. On confirme et on montre le flow exact.",
+        sendBtn:"Envoyer",
+        closeBtn:"Fermer",
+        callFabText:"TESTER L’IA (APPELER)"
       }
     };
 
     function applyLang(lang){
       const t = text[lang];
-
       const set = (id, val) => { const el=document.getElementById(id); if(el) el.textContent = val; };
-
       set("promoTag", t.promoTag);
       set("promoBold", t.promoBold);
       set("promoText", t.promoText);
-
       set("topNote", t.topNote);
       set("heroTitle", t.heroTitle);
       set("heroDesc", t.heroDesc);
-      set("badge1", t.badge1); set("badge2", t.badge2); set("badge3", t.badge3); set("badge4", t.badge4);
-      set("heroCardTitle", t.heroCardTitle);
-      set("stat1", t.stat1); set("stat1b", t.stat1b);
-      set("stat2", t.stat2); set("stat2b", t.stat2b);
-      set("stat3", t.stat3); set("stat3b", t.stat3b);
-
-      set("missionTitle", t.missionTitle);
-      set("missionSub", t.missionSub);
-      set("missionSide", t.missionSide);
-      set("missionH1", t.missionH1);
-      set("missionP1", t.missionP1);
-      set("missionH2", t.missionH2);
-      set("missionP2", t.missionP2);
-      set("missionH3", t.missionH3);
-
-      set("teamTitle", t.teamTitle);
-      set("teamSub", t.teamSub);
-
-      set("howTitle", t.howTitle);
-      set("howSub", t.howSub);
-      set("step1T", t.step1T);
-      set("step1D", t.step1D);
-      set("step2T", t.step2T);
-      set("step2D", t.step2D);
-      set("step2L1", t.step2L1);
-      set("step2L2", t.step2L2);
-      set("step2L3", t.step2L3);
-      set("step3T", t.step3T);
-      set("step3D", t.step3D);
-      set("howNoteT", t.howNoteT);
-      set("howNoteD", t.howNoteD);
-
-      set("pricingTitle", t.pricingTitle);
-      set("pricingSub", t.pricingSub);
-
-      set("ai1sub", t.ai1sub);
-      set("ai2sub", t.ai2sub);
-      set("ai3sub", t.ai3sub);
-
-      set("tagStarter", t.tagStarter);
-      set("tagBest", t.tagBest);
-
-      set("featTitle", t.featTitle);
-      set("featSub", t.featSub);
-      set("f1t", t.f1t); set("f1d", t.f1d);
-      set("f2t", t.f2t); set("f2d", t.f2d);
-      set("f3t", t.f3t); set("f3d", t.f3d);
-      set("f4t", t.f4t); set("f4d", t.f4d);
-      set("f5t", t.f5t); set("f5d", t.f5d);
-      set("f6t", t.f6t); set("f6d", t.f6d);
-
-      set("supTitle", t.supTitle);
-      set("supSub", t.supSub);
-      set("contactT", t.contactT);
-      set("faqT", t.faqT);
-      set("faq1", t.faq1);
-      set("faq2", t.faq2);
-      set("faq3", t.faq3);
-
-      set("mtlNoteT", t.mtlNoteT);
-      set("mtlNoteD", t.mtlNoteD);
-
+      set("heroTestLine", t.heroTestLine);
+      set("heroCta", t.heroCta);
+      set("heroCta2", t.heroCta2);
+      set("scheduleBtn", t.scheduleBtn);
+      set("scheduleBtn2", t.scheduleBtn2);
+      set("scheduleBtnMobile", t.scheduleBtnMobile);
       set("modalTitle", t.modalTitle);
       set("modalDesc", t.modalDesc);
-      set("labName", t.labName);
-      set("labBiz", t.labBiz);
-      set("labPhone", t.labPhone);
-      set("labEmail", t.labEmail);
-      set("labMsg", t.labMsg);
       set("sendBtn", t.sendBtn);
       set("closeBtn", t.closeBtn);
-
       set("callFabText", t.callFabText);
-
-      // mission highlight
-      const mh = document.getElementById("missionHighlight");
-      if(mh){
-        if(lang === "en") mh.innerHTML = "<b>More bookings.</b> Faster replies. No extra staff.";
-        else mh.innerHTML = "<b>Plus de rendez-vous.</b> Réponses plus rapides. Sans personnel en plus.";
-      }
 
       const en = lang === "en";
       document.getElementById("enBtn").classList.toggle("active", en);
